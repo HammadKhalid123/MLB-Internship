@@ -32,6 +32,19 @@ MLB-Internship/
 │   ├── Program_Execution.mp4
 │   └── README.md
 │
+├── Day_4/
+│   ├── Practice_Programs/
+│   │   ├── file_handling.py
+│   │   ├── json_practice.py
+│   │   ├── students.json
+│   │   └── students.txt
+│   │
+│   ├── Student_Record_Management_System/
+│   │   ├── student_record_management.py
+│   │   └── students.json
+│   │
+│   └── README.md
+│
 ├── .gitignore
 └── README.md
 ```
@@ -66,6 +79,18 @@ MLB-Internship/
 - Functions
 - Menu-Driven Application (Bonus Challenge)
 - Program Execution Video
+
+### Day 4
+- File Handling in Python
+- Reading, Writing, and Appending Files
+- Working with Text Files
+- Using the `with` Statement
+- File Modes (`r`, `w`, `a`)
+- JSON in Python
+- Reading and Writing JSON Files
+- Converting Python Dictionaries to JSON
+- Loading JSON Data into Python Objects
+- Practice Programs
 
 More daily tasks and projects will be added throughout the internship.
 

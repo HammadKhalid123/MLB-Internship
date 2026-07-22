@@ -1,0 +1,3 @@
+Alice Johnson, 20, Computer Science
+Bob Smith, 22, Mathematics
+Hammad, 20, Computer Science

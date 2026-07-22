@@ -1,0 +1,50 @@
+[
+    {
+        "name": "John Doe",
+        "roll_number": "101",
+        "age": 21,
+        "course": "Physics"
+    },
+    {
+        "name": "Jane Smith",
+        "roll_number": "102",
+        "age": 22,
+        "course": "Chemistry"
+    },
+    {
+        "name": "Bob Williams",
+        "roll_number": "104",
+        "age": 23,
+        "course": "Mathematics"
+    },
+    {
+        "name": "Eva Martinez",
+        "roll_number": "105",
+        "age": 21,
+        "course": "Biology"
+    },
+    {
+        "name": "David Lee",
+        "roll_number": "106",
+        "age": 22,
+        "course": "Engineering"
+    },
+    {
+        "name": "Sarah Khan",
+        "roll_number": "107",
+        "age": 20,
+        "course": "Economics"
+    },
+    {
+        "name": "Michael Brown",
+        "roll_number": "108",
+        "age": 24,
+        "course": "Psychology"
+    },
+    {
+        "name": "Hammad Khalid",
+        "roll_number": "637",
+        "age": 20,
+        "course": "Computer Science"
+    }
+]
