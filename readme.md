@@ -45,6 +45,16 @@ MLB-Internship/
 │   │
 │   └── README.md
 │
+├── Day_5/
+│   ├── OOP_Practice/
+│   │   └── oop_practice.py
+│   │
+│   ├── Library_Management_System/
+│   │   ├── library_management.py
+│   │   └── books.json
+│   │
+│   └── README.md
+│
 ├── .gitignore
 └── README.md
 ```
@@ -83,14 +93,20 @@ MLB-Internship/
 ### Day 4
 - File Handling in Python
 - Reading, Writing, and Appending Files
-- Working with Text Files
-- Using the `with` Statement
-- File Modes (`r`, `w`, `a`)
 - JSON in Python
-- Reading and Writing JSON Files
-- Converting Python Dictionaries to JSON
-- Loading JSON Data into Python Objects
 - Practice Programs
+- Persistent Student Record Management System
+
+### Day 5
+- Object-Oriented Programming (OOP)
+- Classes and Objects
+- Constructors and Methods
+- Inheritance
+- Method Overriding
+- Encapsulation
+- OOP Practice Programs
+- Library Management System
+- JSON File Storage
 
 More daily tasks and projects will be added throughout the internship.
 
