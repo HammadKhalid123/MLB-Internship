@@ -1,6 +1,6 @@
 # MLBench Summer Internship
 
-A complete record of my hands-on work during the MLBench Summer Internship, covering Python fundamentals, Data Science, problem-solving, and daily projects.
+A collection of my hands-on work completed during the MLBench Summer Internship, covering Python programming, Data Science, data analysis, visualization, and real-world mini projects.
 
 ## Repository Structure
 
@@ -13,10 +13,11 @@ MLB-Internship/
 ├── Day_4/
 ├── Day_5/
 ├── Day_6/
-│   ├── NumPy_Practice/
-│   ├── Pandas_Practice/
-│   ├── Student_Performance_Analysis/
-│   └── README.md
+├── Day_7/
+│   ├── Data_Cleaning/
+│   ├── Data_Visualization/
+│   ├── README.md
+│   └── screen_recording.mp4
 │
 ├── .gitignore
 └── README.md
@@ -48,7 +49,7 @@ MLB-Internship/
 
 ### Day 5
 - Object-Oriented Programming (OOP)
-- OOP Practice
+- OOP Concepts & Practice
 - Library Management System
 
 ### Day 6
@@ -57,7 +58,24 @@ MLB-Internship/
 - Data Analysis
 - Student Performance Analysis
 
+### Day 7
+- Data Cleaning with Pandas
+- Data Visualization with Matplotlib & Seaborn
+- Bar, Histogram, Scatter, Pie & Box Plots
+- Student Performance Dashboard
+- Data Analysis & Insights
+
 More daily tasks and projects will be added throughout the internship.
+
+## Technologies Used
+
+- Python
+- NumPy
+- Pandas
+- Matplotlib
+- Seaborn
+- Jupyter Notebook
+- Git & GitHub
 
 ## Author
 
