@@ -1,10 +1,16 @@
+import os
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder, StandardScaler
 
+# Absolute path to the folder this file lives in (works no matter what the
+# current working directory is — important for cloud deployment).
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_PATH = os.path.join(BASE_DIR, "data", "cleaned_student_performance.csv")
+
 
 def load_data():
-    df = pd.read_csv("./data/cleaned_student_performance.csv")
+    df = pd.read_csv(DATA_PATH)
     return df
 
 

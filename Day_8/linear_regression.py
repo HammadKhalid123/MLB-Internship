@@ -7,7 +7,10 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 from preprocessing import preprocess_pipeline
 
-GRAPH_PATH = "./graphs/actual_vs_predicted.png"
+# Absolute path to the folder this file lives in (works no matter what the
+# current working directory is — important for cloud deployment).
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+GRAPH_PATH = os.path.join(BASE_DIR, "graphs", "actual_vs_predicted.png")
 
 
 def train_model(X_train, y_train):

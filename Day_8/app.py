@@ -16,7 +16,12 @@ FEATURE_COLUMNS = [
     "Age",
 ]
 
-DATA_PATH = "./data/cleaned_student_performance.csv"
+# Absolute path to the folder this file lives in (works no matter what the
+# current working directory is — important for cloud deployment, where the
+# app is often launched from the repo root instead of this folder).
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_PATH = os.path.join(BASE_DIR, "data", "cleaned_student_performance.csv")
+GRAPHS_DIR = os.path.join(BASE_DIR, "graphs")
 
 st.set_page_config(
     page_title="Student Score Prediction System",
@@ -45,7 +50,7 @@ st.title("Student Score Prediction System")
 st.caption("Predicting a student's **Average Score** using Linear Regression")
 
 if not os.path.exists(DATA_PATH):
-    st.error(f"❌ Dataset not found at `{DATA_PATH}`. Please add the CSV file there.")
+    st.error(f"Dataset not found at `{DATA_PATH}`. Please add the CSV file there.")
     st.stop()
 
 data = preprocess_pipeline()
@@ -56,7 +61,7 @@ X_train, X_test = data["X_train"], data["X_test"]
 y_train, y_test = data["y_train"], data["y_test"]
 scaler = data["scaler"]
 
-st.subheader("Dataset Preview")
+st.subheader("📁 Dataset Preview")
 st.dataframe(df.head(20), use_container_width=True)
 st.caption(f"Total rows: {len(df)} | Total columns: {len(df.columns)}")
 
@@ -72,7 +77,7 @@ c2.metric("MSE", f"{metrics['MSE']:.2f}")
 c3.metric("RMSE", f"{metrics['RMSE']:.2f}")
 c4.metric("R² Score", f"{metrics['R2']:.4f}")
 
-st.subheader("Actual vs Predicted")
+st.subheader("🔍 Actual vs Predicted")
 
 comparison = pd.DataFrame(
     {
@@ -108,8 +113,8 @@ with g1:
     fig1.tight_layout()
     st.pyplot(fig1, use_container_width=False)
 
-    os.makedirs("./graphs", exist_ok=True)
-    fig1.savefig("./graphs/actual_vs_predicted.png", dpi=300, bbox_inches="tight")
+    os.makedirs(GRAPHS_DIR, exist_ok=True)
+    fig1.savefig(os.path.join(GRAPHS_DIR, "actual_vs_predicted.png"), dpi=300, bbox_inches="tight")
 
 with g2:
     st.markdown("**Residuals Plot** (errors vs predicted)")
@@ -124,7 +129,7 @@ with g2:
     fig2.tight_layout()
     st.pyplot(fig2, use_container_width=False)
 
-    fig2.savefig("./graphs/residuals_plot.png", dpi=300, bbox_inches="tight")
+    fig2.savefig(os.path.join(GRAPHS_DIR, "residuals_plot.png"), dpi=300, bbox_inches="tight")
 
 # ---------------------------------------------------------
 # Feature Coefficients (own row, compact size)
