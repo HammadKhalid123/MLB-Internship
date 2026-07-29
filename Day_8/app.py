@@ -16,8 +16,6 @@ FEATURE_COLUMNS = [
     "Age",
 ]
 
-# Absolute path to the folder this file lives in (works no matter what the
-# current working directory is — important for cloud deployment, where the
 # app is often launched from the repo root instead of this folder).
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(BASE_DIR, "data", "cleaned_student_performance.csv")
