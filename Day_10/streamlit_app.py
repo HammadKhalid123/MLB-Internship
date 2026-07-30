@@ -2,6 +2,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
+from sklearn.metrics import classification_report
 
 from dataset_exploration import get_dataset
 from baseline_model import run_baseline_model
@@ -23,6 +24,13 @@ def cached_baseline():
 @st.cache_resource
 def cached_tuning():
     return run_hyperparameter_tuning()
+
+
+def show_classification_report(y_test, predictions):
+    report_dict = classification_report(y_test, predictions, output_dict=True)
+    report_df = pd.DataFrame(report_dict).transpose()
+    report_df = report_df.round(3)
+    st.dataframe(report_df, use_container_width=True)
 
 
 def plot_confusion_matrix(cm, title):
@@ -82,7 +90,7 @@ with tab2:
     left, right = st.columns(2)
     with left:
         st.write("Classification Report")
-        st.text(baseline_results["report"])
+        show_classification_report(baseline_results["y_test"], baseline_results["predictions"])
     with right:
         st.write("Confusion Matrix")
         plot_confusion_matrix(
@@ -109,7 +117,7 @@ with tab3:
         left, right = st.columns(2)
         with left:
             st.write("Classification Report")
-            st.text(tuning_results["report"])
+            show_classification_report(tuning_results["y_test"], tuning_results["predictions"])
         with right:
             st.write("Confusion Matrix")
             plot_confusion_matrix(
