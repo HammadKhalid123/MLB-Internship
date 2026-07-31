@@ -1,6 +1,6 @@
 # MLBench Summer Internship
 
-A collection of my hands-on work completed during the MLBench Summer Internship, covering Python, Data Science, Machine Learning, data analysis, visualization, and mini projects.
+A collection of my hands-on work completed during the MLBench Summer Internship, covering Python, Data Science, Machine Learning, data analysis, visualization, and real-world mini projects.
 
 ## Repository Structure
 
@@ -15,6 +15,9 @@ MLB-Internship/
 ├── Day_6/
 ├── Day_7/
 ├── Day_8/
+├── Day_9/
+├── Day_10/
+├── Day_11/
 │
 ├── .gitignore
 └── README.md
@@ -60,10 +63,31 @@ MLB-Internship/
 ### Day 8
 - Data Preprocessing
 - Linear Regression
-- Model Evaluation
+- Regression Model
 - Streamlit Web Application
 
-More tasks and projects will be added throughout the internship.
+### Day 9
+- Classification
+- Logistic Regression
+- Decision Tree
+- Model Evaluation
+- Iris & Breast Cancer Classification
+
+### Day 10
+- Model Evaluation
+- Cross Validation
+- Hyperparameter Tuning
+- GridSearchCV
+- Breast Cancer Prediction System
+- Streamlit Web Application
+
+### Day 11
+- Unsupervised Learning
+- K-Means Clustering
+- Elbow Method
+- Principal Component Analysis (PCA)
+- Iris Clustering & Visualization
+- Streamlit Web Application
 
 ## Technologies Used
 
