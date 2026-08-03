@@ -1,6 +1,6 @@
 # MLBench Summer Internship
 
-A collection of my hands-on work completed during the MLBench Summer Internship, covering Python, Data Science, Machine Learning, data analysis, visualization, and real-world mini projects.
+A collection of my hands-on work completed during the MLBench Summer Internship, covering Python, Data Science, Machine Learning, Deep Learning, data analysis, visualization, and real-world mini projects.
 
 ## Repository Structure
 
@@ -18,6 +18,7 @@ MLB-Internship/
 ├── Day_9/
 ├── Day_10/
 ├── Day_11/
+├── Day_12/
 │
 ├── .gitignore
 └── README.md
@@ -89,12 +90,24 @@ MLB-Internship/
 - Iris Clustering & Visualization
 - Streamlit Web Application
 
+### Day 12
+- Introduction to Deep Learning
+- Artificial Neural Networks (ANN)
+- Perceptron
+- Activation Functions (ReLU, Sigmoid, Tanh, Softmax)
+- TensorFlow & Keras
+- Fashion MNIST Classification
+- Training & Validation Accuracy
+- Sample Predictions
+
 ## Technologies Used
 
 - Python
 - NumPy
 - Pandas
 - Scikit-learn
+- TensorFlow
+- Keras
 - Matplotlib
 - Seaborn
 - Streamlit
