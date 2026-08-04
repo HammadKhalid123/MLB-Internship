@@ -19,6 +19,7 @@ MLB-Internship/
 ├── Day_10/
 ├── Day_11/
 ├── Day_12/
+├── Day_13/
 │
 ├── .gitignore
 └── README.md
@@ -99,6 +100,17 @@ MLB-Internship/
 - Fashion MNIST Classification
 - Training & Validation Accuracy
 - Sample Predictions
+- Streamlit Web Application
+
+### Day 13
+- Convolutional Neural Networks (CNN)
+- Convolution & Pooling Layers
+- Fashion MNIST Image Classification
+- Model Evaluation
+- Confusion Matrix
+- Correct & Incorrect Predictions
+- Model Saving (.h5)
+- Streamlit Web Application
 
 ## Technologies Used
 
