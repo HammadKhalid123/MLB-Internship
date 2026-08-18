@@ -1,37 +1,51 @@
-import gradio as gr
+import streamlit as st
 import cv2
+import tempfile
+import os
 from source_code import get_reader, process_image
 
-reader = get_reader()
+
+@st.cache_resource
+def load_reader():
+    return get_reader()
 
 
-def run_ocr(image_path):
-    if image_path is None:
-        return None, "", None
+reader = load_reader()
 
-    data = process_image(image_path, reader, output_dir="output_images", output_txt="output.txt")
+st.title("OCR Text Extractor")
+st.write("Upload an image to extract text using EasyOCR")
 
-    if data is None:
-        return None, "No text detected", None
+uploaded_file = st.file_uploader("Upload Image", type=["png", "jpg", "jpeg"])
 
-    annotated_image = cv2.cvtColor(data["annotated_image"], cv2.COLOR_BGR2RGB)
+if uploaded_file is not None:
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as temp_file:
+        temp_file.write(uploaded_file.read())
+        temp_path = temp_file.name
 
-    extracted_text = "\n".join([detection[1] for detection in data["result"]])
+    original_image = cv2.cvtColor(cv2.imread(temp_path), cv2.COLOR_BGR2RGB)
 
-    return annotated_image, extracted_text, "output.txt"
+    if st.button("Extract Text"):
+        with st.spinner("Extracting text..."):
+            data = process_image(temp_path, reader, output_dir="output_images", output_txt="output.txt")
 
+        if data is None:
+            st.error("No text detected")
+        else:
+            annotated_image = cv2.cvtColor(data["annotated_image"], cv2.COLOR_BGR2RGB)
 
-demo = gr.Interface(
-    fn=run_ocr,
-    inputs=gr.Image(type="filepath", label="Upload Image"),
-    outputs=[
-        gr.Image(label="Detected Text Regions"),
-        gr.Textbox(label="Extracted Text", lines=15),
-        gr.File(label="Download Text File")
-    ],
-    title="OCR Text Extractor",
-    description="Upload an image to extract text using EasyOCR"
-)
+            extracted_text = "\n".join([detection[1] for detection in data["result"]])
 
-if __name__ == "__main__":
-    demo.launch()
+            col1, col2 = st.columns(2)
+
+            with col1:
+                st.image(original_image, caption="Original Image")
+
+            with col2:
+                st.image(annotated_image, caption="Detected Text Regions")
+
+            st.text_area("Extracted Text", extracted_text, height=300)
+
+            with open("output.txt", "rb") as f:
+                st.download_button("Download Text File", f, file_name="output.txt")
+
+    os.remove(temp_path)

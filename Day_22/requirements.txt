@@ -1,4 +1,4 @@
-gradio
+streamlit
 easyocr
 opencv-python-headless
 numpy
