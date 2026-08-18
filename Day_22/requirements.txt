@@ -1,0 +1,4 @@
+gradio
+easyocr
+opencv-python-headless
+numpy
