@@ -6,4 +6,3 @@ python-doctr[torch]
 paddlepaddle
 paddleocr
 opencv-python-headless
-tesseract-ocr
