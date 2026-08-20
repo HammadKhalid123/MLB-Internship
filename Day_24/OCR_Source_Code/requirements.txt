@@ -1,0 +1,9 @@
+streamlit
+numpy
+pytesseract
+easyocr
+python-doctr[torch]
+paddlepaddle
+paddleocr
+opencv-python-headless
+rapidocr-onnxruntime
