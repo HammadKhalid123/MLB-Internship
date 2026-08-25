@@ -301,8 +301,10 @@ div[data-baseweb="select"] svg {
 IMAGE_EXTENSIONS = [".jpg", ".jpeg", ".png", ".bmp", ".webp"]
 VIDEO_EXTENSIONS = [".mp4", ".avi", ".mov", ".mkv"]
 
-SAMPLE_IMAGES_DIR = Path("input_images")
-SAMPLE_VIDEOS_DIR = Path("input_videos")
+BASE_DIR = Path(__file__).resolve().parent
+
+SAMPLE_IMAGES_DIR = BASE_DIR / "input_images"
+SAMPLE_VIDEOS_DIR = BASE_DIR / "input_videos"
 
 NO_SAMPLE_LABEL = "— None —"
 
