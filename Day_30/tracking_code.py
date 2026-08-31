@@ -7,14 +7,25 @@ import imageio.v2 as imageio
 from ultralytics import YOLO
 
 
+# Base directory = the folder this file (tracking_code.py) lives in.
+# This makes all relative paths (input_videos, saved_videos) work no matter
+# what the current working directory is when Streamlit runs the app
+# (e.g. on Streamlit Cloud the cwd is often the repo root, not the Day_30 folder).
+BASE_DIR = Path(__file__).resolve().parent
+
+
 def load_model(model_path="yolov8n.pt"):
     return YOLO(model_path)
 
 
 def list_sample_videos(input_dir="input_videos"):
     input_dir = Path(input_dir)
+    if not input_dir.is_absolute():
+        input_dir = BASE_DIR / input_dir
+
     if not input_dir.exists():
         return []
+
     extensions = {".mp4", ".avi", ".mov", ".mkv"}
     return sorted(
         [p for p in input_dir.iterdir() if p.suffix.lower() in extensions],
@@ -60,7 +71,10 @@ def process_video(
         model = load_model()
 
     video_path = Path(video_path)
+
     output_dir = Path(output_dir)
+    if not output_dir.is_absolute():
+        output_dir = BASE_DIR / output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
 
     output_path = output_dir / f"{video_path.stem}_tracked.mp4"
