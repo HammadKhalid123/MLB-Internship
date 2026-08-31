@@ -24,7 +24,7 @@ st.write("Upload an image or video. The trained YOLO model will detect **players
 # -----------------------------
 # Load Model (cached so it loads only once)
 # -----------------------------
-MODEL_PATH = "football_player_v2/weights/best.pt"  # apna trained model ka path yahan check kar lena
+MODEL_PATH = "models/best.pt"   # apna trained model ka path yahan check kar lena
 
 @st.cache_resource
 def load_model(model_path):
@@ -159,31 +159,47 @@ elif file_type == "Video":
             cap.release()
             out.release()
 
-            # Re-encode with ffmpeg (bundled via imageio-ffmpeg, no system install needed)
-            with st.spinner("Finalizing video (encoding for browser playback)..."):
-                if os.path.exists(output_path):
-                    os.remove(output_path)
+            # Step 1: get the ffmpeg binary (downloads on first run only - show separate status)
+            with st.spinner("Preparing ffmpeg (first run may download ~25MB, please wait)..."):
                 try:
                     ffmpeg_exe = imageio_ffmpeg.get_ffmpeg_exe()
-                    subprocess.run(
-                        [
-                            ffmpeg_exe, "-y",
-                            "-i", raw_output_path,
-                            "-vcodec", "libx264",
-                            "-pix_fmt", "yuv420p",
-                            "-movflags", "+faststart",
-                            output_path
-                        ],
-                        check=True,
-                        stdout=subprocess.DEVNULL,
-                        stderr=subprocess.DEVNULL
-                    )
-                    os.remove(raw_output_path)
-                except (subprocess.CalledProcessError, FileNotFoundError):
-                    st.error(
-                        "⚠️ Video re-encoding failed. Showing raw video instead (may not play in browser)."
-                    )
-                    output_path = raw_output_path
+                except Exception as e:
+                    st.error(f"Could not get ffmpeg binary: {e}")
+                    ffmpeg_exe = None
+
+            # Step 2: re-encode with ffmpeg to H.264 so it plays in the browser
+            if ffmpeg_exe:
+                with st.spinner("Finalizing video (encoding for browser playback)..."):
+                    if os.path.exists(output_path):
+                        os.remove(output_path)
+                    try:
+                        result_proc = subprocess.run(
+                            [
+                                ffmpeg_exe, "-y",
+                                "-i", raw_output_path,
+                                "-vcodec", "libx264",
+                                "-pix_fmt", "yuv420p",
+                                "-movflags", "+faststart",
+                                output_path
+                            ],
+                            capture_output=True,
+                            text=True,
+                            timeout=300
+                        )
+                        if result_proc.returncode != 0:
+                            st.error("⚠️ ffmpeg encoding failed:")
+                            st.code(result_proc.stderr[-1500:])
+                            output_path = raw_output_path
+                        else:
+                            os.remove(raw_output_path)
+                    except subprocess.TimeoutExpired:
+                        st.error("⚠️ ffmpeg took too long and was stopped. Showing raw video instead.")
+                        output_path = raw_output_path
+                    except Exception as e:
+                        st.error(f"⚠️ Video re-encoding failed: {e}")
+                        output_path = raw_output_path
+            else:
+                output_path = raw_output_path
 
             st.success("✅ Video processing completed!")
             st.video(output_path)
