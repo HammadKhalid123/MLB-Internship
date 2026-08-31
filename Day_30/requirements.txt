@@ -6,3 +6,4 @@ imageio-ffmpeg
 pandas
 pillow
 numpy
+lap
