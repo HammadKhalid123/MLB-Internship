@@ -1,6 +1,6 @@
 # MLBench Summer Internship
 
-A collection of hands-on projects completed during the **MLBench Summer Internship**, covering Python, Data Science, Machine Learning, Deep Learning, Computer Vision, OCR, and Streamlit.
+A collection of hands-on projects completed during the **MLBench Summer Internship**, covering Python, Data Science, Machine Learning, Deep Learning, Computer Vision, OCR, Object Detection, YOLO, and Streamlit.
 
 ## Repository Structure
 
@@ -30,6 +30,12 @@ MLB-Internship/
 ├── Day_21/
 ├── Day_22/
 ├── Day_23/
+├── Day_24/
+├── Day_25/
+├── Day_26/
+├── Day_27/
+├── Day_28/
+├── Day_29/
 │
 ├── .gitignore
 └── README.md
@@ -43,8 +49,10 @@ MLB-Internship/
 * Deep Learning
 * Computer Vision
 * Image Processing
+* Image Segmentation
 * Object Detection
 * YOLO
+* Custom YOLO Training
 * OCR
 * EasyOCR
 * Tesseract OCR
