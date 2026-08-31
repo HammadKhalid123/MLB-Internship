@@ -24,7 +24,10 @@ st.write("Upload an image or video. The trained YOLO model will detect **players
 # -----------------------------
 # Load Model (cached so it loads only once)
 # -----------------------------
-MODEL_PATH = "models/best.pt"   # apna trained model ka path yahan check kar lena
+# Path resolve app.py ki apni location ke relative hoti hai (chahe Streamlit
+# Cloud repo root se run kare ya tum apne PC pe Day_29 folder se run karo)
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_PATH = str(BASE_DIR / "football_player_v2" / "weights" / "best.pt")
 
 @st.cache_resource
 def load_model(model_path):
