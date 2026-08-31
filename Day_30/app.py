@@ -43,6 +43,38 @@ conf = st.sidebar.slider(
 )
 
 st.sidebar.markdown("---")
+st.sidebar.subheader("Performance")
+
+resolution_choice = st.sidebar.selectbox(
+    "Processing Resolution",
+    ["480p (fastest)", "720p (balanced)", "960p", "Original (slowest, best quality)"],
+    index=1
+)
+
+resolution_map = {
+    "480p (fastest)": 480,
+    "720p (balanced)": 720,
+    "960p": 960,
+    "Original (slowest, best quality)": None
+}
+max_width = resolution_map[resolution_choice]
+
+frame_skip = st.sidebar.slider(
+    "Frame Skip (1 = process every frame)",
+    min_value=1,
+    max_value=5,
+    value=1,
+    step=1,
+    help="Higher values skip frames to speed things up further, at the cost of a "
+         "choppier, shorter output video. Leave at 1 for smooth output."
+)
+
+st.sidebar.caption(
+    "Tip: this app runs on CPU. Lower resolution and higher frame skip = much "
+    "faster processing, especially for 4K source videos."
+)
+
+st.sidebar.markdown("---")
 st.sidebar.caption("Model: YOLOv8n")
 
 source_choice = st.radio(
@@ -96,6 +128,13 @@ if video_path is not None:
     meta_col3.metric("Resolution", f"{metadata['width']}x{metadata['height']}")
     meta_col4.metric("Duration (s)", f"{metadata['duration_seconds']:.1f}")
 
+    if metadata["width"] > 1920 and max_width is None:
+        st.warning(
+            "This is a high-resolution (4K+) video and 'Original' resolution is "
+            "selected. Processing on CPU at full resolution can take a very long "
+            "time — consider choosing a lower Processing Resolution above."
+        )
+
     if st.button("Start Tracking", type="primary"):
         model = get_model()
 
@@ -116,7 +155,9 @@ if video_path is not None:
                     output_dir="saved_videos",
                     tracker=tracker,
                     conf=conf,
-                    progress_callback=update_progress
+                    progress_callback=update_progress,
+                    max_width=max_width,
+                    frame_skip=frame_skip
                 )
         except Exception as error:
             progress_bar.empty()

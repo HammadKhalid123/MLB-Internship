@@ -8,9 +8,8 @@ from ultralytics import YOLO
 
 
 # Base directory = the folder this file (tracking_code.py) lives in.
-# This makes all relative paths (input_videos, saved_videos) work no matter
-# what the current working directory is when Streamlit runs the app
-# (e.g. on Streamlit Cloud the cwd is often the repo root, not the Day_30 folder).
+# Makes relative paths (input_videos, saved_videos) work no matter what the
+# current working directory is when Streamlit runs the app.
 BASE_DIR = Path(__file__).resolve().parent
 
 
@@ -59,13 +58,29 @@ def get_video_metadata(video_path):
     }
 
 
+def _compute_resized_dims(width, height, max_width):
+    if not max_width or width <= max_width:
+        new_width, new_height = width, height
+    else:
+        scale = max_width / width
+        new_width = max_width
+        new_height = int(round(height * scale))
+
+    new_width -= new_width % 2
+    new_height -= new_height % 2
+    return max(new_width, 2), max(new_height, 2)
+
+
 def process_video(
     video_path,
     model=None,
     output_dir="saved_videos",
     tracker="bytetrack.yaml",
     conf=0.5,
-    progress_callback=None
+    progress_callback=None,
+    max_width=960,
+    imgsz=640,
+    frame_skip=1
 ):
     if model is None:
         model = load_model()
@@ -81,18 +96,26 @@ def process_video(
 
     metadata = get_video_metadata(video_path)
     fps = metadata["fps"]
-    width = metadata["width"]
-    height = metadata["height"]
+    orig_width = metadata["width"]
+    orig_height = metadata["height"]
     total_frames = metadata["total_frames"]
+
+    out_width, out_height = _compute_resized_dims(orig_width, orig_height, max_width)
+    output_fps = fps / frame_skip if frame_skip > 1 else fps
 
     writer = imageio.get_writer(
         str(output_path),
-        fps=fps,
+        fps=output_fps,
         codec="libx264",
-        quality=8,
+        quality=None,
         macro_block_size=1,
         pixelformat="yuv420p",
-        ffmpeg_params=["-pix_fmt", "yuv420p", "-movflags", "+faststart"]
+        ffmpeg_params=[
+            "-pix_fmt", "yuv420p",
+            "-movflags", "+faststart",
+            "-preset", "ultrafast",   # much faster encoding than the default preset
+            "-crf", "26"              # reasonable quality/size tradeoff at speed
+        ]
     )
 
     unique_ids = set()
@@ -101,28 +124,50 @@ def process_video(
 
     start_time = time.time()
     processed_frames = 0
+    written_frames = 0
 
-    font_scale = max(0.6, min(width, height) / 700)
-    box_thickness = max(2, int(min(width, height) / 350))
+    font_scale = max(0.6, min(out_width, out_height) / 700)
+    box_thickness = max(2, int(min(out_width, out_height) / 350))
     text_thickness = max(2, int(font_scale * 2))
 
-    try:
-        results = model.track(
-            source=str(video_path),
-            tracker=tracker,
-            conf=conf,
-            stream=True,
-            persist=True,
-            save=False,
-            verbose=False
-        )
+    cap = cv2.VideoCapture(str(video_path))
+    if not cap.isOpened():
+        writer.close()
+        raise ValueError(f"Could not open video: {video_path}")
 
-        for result in results:
+    frame_index = 0
+
+    try:
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                break
+
+            frame_index += 1
+
+            # Skip frames if requested (speed lever)
+            if frame_skip > 1 and (frame_index - 1) % frame_skip != 0:
+                if progress_callback is not None and total_frames:
+                    progress_callback(min(frame_index, total_frames), total_frames)
+                continue
+
+            if (out_width, out_height) != (orig_width, orig_height):
+                frame = cv2.resize(frame, (out_width, out_height), interpolation=cv2.INTER_LINEAR)
+
             processed_frames += 1
-            frame = result.orig_img.copy()
+
+            result = model.track(
+                frame,
+                tracker=tracker,
+                conf=conf,
+                imgsz=imgsz,
+                persist=True,
+                verbose=False
+            )[0]
+
             boxes = result.boxes
 
-            if boxes is not None:
+            if boxes is not None and len(boxes) > 0:
                 ids = boxes.id.cpu().numpy() if boxes.id is not None else None
 
                 for index, box in enumerate(boxes):
@@ -169,10 +214,12 @@ def process_video(
                     )
 
             writer.append_data(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+            written_frames += 1
 
             if progress_callback is not None and total_frames:
-                progress_callback(min(processed_frames, total_frames), total_frames)
+                progress_callback(min(frame_index, total_frames), total_frames)
     finally:
+        cap.release()
         writer.close()
 
     processing_time = time.time() - start_time
@@ -184,11 +231,12 @@ def process_video(
     return {
         "video_name": video_path.name,
         "output_path": str(output_path),
-        "fps": fps,
-        "frame_width": width,
-        "frame_height": height,
+        "fps": output_fps,
+        "frame_width": out_width,
+        "frame_height": out_height,
         "total_frames": total_frames,
         "processed_frames": processed_frames,
+        "written_frames": written_frames,
         "duration_seconds": metadata["duration_seconds"],
         "processing_time_seconds": processing_time,
         "number_of_unique_objects": len(unique_ids),
