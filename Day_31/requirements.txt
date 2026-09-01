@@ -1,0 +1,9 @@
+ultralytics
+streamlit
+opencv-python-headless
+imageio
+imageio-ffmpeg
+pandas
+pillow
+numpy
+lap
