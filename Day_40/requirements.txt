@@ -1,8 +1,10 @@
-streamlit
-opencv-python
 ultralytics
-numpy
-pillow
-streamlit-drawable-canvas
+streamlit
+opencv-python-headless
 imageio
 imageio-ffmpeg
+pillow
+numpy
+streamlit-drawable-canvas
+streamlit-image-coordinates
+pandas
